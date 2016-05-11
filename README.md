@@ -1,4 +1,4 @@
-# Alpine Issues Collector
+# Alpine Issue Collector
 
 This is the repository of a long-running program which will do the following:
 
