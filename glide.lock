@@ -1,0 +1,25 @@
+hash: 4a3a8709e024011b4a78ae2ea9be2b0db9d7fe24c448822bef129edf82011be5
+updated: 2016-06-03T12:04:12.413751728-04:00
+imports:
+- name: github.com/andybalholm/cascadia
+  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+- name: github.com/headzoo/surf
+  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+  subpackages:
+  - browser
+  - agent
+  - jar
+  - errors
+  - util
+- name: github.com/Pallinder/go-randomdata
+  version: 104cc800bd6434e70cb0c3ad08c4541f4f2eb48b
+- name: github.com/PuerkitoBio/goquery
+  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+- name: github.com/smartystreets/goconvey
+  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+- name: golang.org/x/net
+  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+  subpackages:
+  - html
+  - html/atom
+devImports: []

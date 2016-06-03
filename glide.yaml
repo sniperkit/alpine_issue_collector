@@ -1,0 +1,6 @@
+package: github.com/eedevops/alpine_issue_collector
+version: ""
+import:
+- package: github.com/headzoo/surf
+- package: github.com/smartystreets/goconvey
+- package: github.com/Pallinder/go-randomdata
