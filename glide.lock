@@ -1,10 +1,12 @@
-hash: 4a3a8709e024011b4a78ae2ea9be2b0db9d7fe24c448822bef129edf82011be5
-updated: 2016-06-03T12:04:12.413751728-04:00
+hash: f027a06c3181b4a7923e4d6cfbec23f7237afff607b038bb1c391094cad89c10
+updated: 2016-06-03T14:33:05.186386485-04:00
 imports:
 - name: github.com/andybalholm/cascadia
-  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
+- name: github.com/aws/aws-sdk-go
+  version: 1608a1f6ffe7f327007d2aca50ebf1d26c285ef2
 - name: github.com/headzoo/surf
-  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
   subpackages:
   - browser
   - agent
@@ -12,13 +14,13 @@ imports:
   - errors
   - util
 - name: github.com/Pallinder/go-randomdata
-  version: 104cc800bd6434e70cb0c3ad08c4541f4f2eb48b
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
 - name: github.com/PuerkitoBio/goquery
-  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
 - name: github.com/smartystreets/goconvey
-  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
 - name: golang.org/x/net
-  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
   subpackages:
   - html
   - html/atom
