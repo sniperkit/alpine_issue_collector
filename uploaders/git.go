@@ -7,10 +7,13 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+	"regexp"
+	"net"
 )
 
 const (
 	CONFIG_FILE_HEADER = "Added by ILM Git uploader"
+	DEFAULT_GIT_REMOTE_HOST = "github.com"
 )
 
 type GitServerUploader struct {
@@ -19,6 +22,7 @@ type GitServerUploader struct {
 var (
 	ErrSshDeployKeyNotPassed = errors.New("SSH Deploy Key not passed as parameter")
 	ErrHomeEnvVarNotSet      = errors.New("$HOME env var not set, this is needed for deploying key.")
+	ErrSshKeyScan      = errors.New("Could not scan or retrieve ssh key")
 )
 
 // TODO: make paths configurable with some default values
@@ -34,7 +38,12 @@ func ConfigureSshEnv(deployKey string) error {
 		return ErrHomeEnvVarNotSet
 	}
 
-	defaultDeployKeyFile := homePath + "/.ssh/auto-generated-ilm-deploy-key"
+	sshDir := fmt.Sprintf("%s/.ssh",homePath)
+	if err := mkdir(sshDir); err != nil {
+		return err
+	}
+
+	defaultDeployKeyFile := fmt.Sprintf("%s/auto-generated-ilm-deploy-key",sshDir)
 
 	if err := ioutil.WriteFile(defaultDeployKeyFile, []byte(deployKey), 0600); err != nil {
 		return err
@@ -71,6 +80,39 @@ func ConfigureSshEnv(deployKey string) error {
 		}
 	}
 
+	// Add host's ssh key into trusted known hosts file
+	knownHosts := fmt.Sprintf("%s/known_hosts",sshDir)
+
+	dataString = ""
+	if _, err := os.Stat(knownHosts); os.IsNotExist(err) {
+		if err := ioutil.WriteFile(knownHosts, []byte(dataString), 0600); err != nil {
+			return err
+		}
+	} else {
+		data, err := ioutil.ReadFile(knownHosts)
+		if err != nil {
+			fmt.Errorf("Could not read config file %s", knownHosts)
+			return err
+		}
+		dataString = string(data)
+	}
+
+	if !strings.Contains(dataString, DEFAULT_GIT_REMOTE_HOST) {
+		// TODO: create a backup copy of the file
+		f, err := os.OpenFile(knownHosts, os.O_APPEND|os.O_WRONLY, 0600)
+
+		if err != nil {
+			return err
+		}
+
+		defer f.Close()
+
+		sshScanResult, _, err := sshKeyScan(DEFAULT_GIT_REMOTE_HOST)
+
+		if _, err = f.WriteString(sshScanResult); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
@@ -191,6 +233,52 @@ func Upload(filePath string, repoConfig GitRepoConfig) error {
 	}
 
 	return nil
+}
+
+func sshKeyScan(host string) (string, string, error) {
+	result, err := exec.Command("ssh-keyscan", "-t", "ssh-rsa",host).Output()
+	sshKeyValue := ""
+	sshScanResult := ""
+	if err != nil {
+		fmt.Println("Error with ssh-keyscan.")
+		fmt.Printf("%s", err.Error())
+		return sshScanResult, sshKeyValue, err
+	}
+
+	sshKeyName := "sshKey"
+	regExpString := fmt.Sprintf("%s\\sssh-rsa\\s(?P<%s>[[:graph:]]+==)", host,sshKeyName )
+
+	re := regexp.MustCompile(regExpString)
+	resultString := string(result)
+	names := re.SubexpNames()
+	myMap := map[string]string{}
+	for i, match := range re.FindStringSubmatch(resultString) {
+		myMap[names[i]] = match
+	}
+
+	sshKeyValue = myMap[sshKeyName]
+	sshScanResult = re.FindString(resultString)
+
+
+	if   sshScanResult== "" || sshKeyValue == ""{
+		return sshScanResult, sshKeyValue, ErrSshKeyScan
+	}
+
+	ipAddress, err := net.ResolveIPAddr("ip", host)
+
+	if err != nil {
+		return sshScanResult, sshKeyValue, err
+	}
+
+	// Inject ip address for host
+	parts := strings.Split(resultString, " ")
+	if len(parts) < 3 {
+		return sshScanResult, sshKeyValue, err
+	}
+
+	sshScanResult = fmt.Sprintf("%s,%s %s %s\n",parts[0],ipAddress,parts[1],parts[2])
+
+	return sshScanResult, sshKeyValue, nil
 }
 
 func mkdir(destinationDir string) error {
