@@ -1,5 +1,5 @@
-hash: f027a06c3181b4a7923e4d6cfbec23f7237afff607b038bb1c391094cad89c10
-updated: 2016-06-03T14:33:05.186386485-04:00
+hash: e6eaaf924d107d7ec1bf5bc3287d18519d6160184d67700b7954937e397a19bf
+updated: 2016-06-06T10:24:34.055509581-04:00
 imports:
 - name: github.com/andybalholm/cascadia
   version: 6b3862839847e1e22f71a9e781e08e05cc749a27
@@ -13,10 +13,14 @@ imports:
   - jar
   - errors
   - util
+- name: github.com/jtolds/gls
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
 - name: github.com/Pallinder/go-randomdata
   version: 6b3862839847e1e22f71a9e781e08e05cc749a27
 - name: github.com/PuerkitoBio/goquery
   version: 6b3862839847e1e22f71a9e781e08e05cc749a27
+- name: github.com/smartystreets/assertions
+  version: 40711f7748186bbf9c99977cd89f21ce1a229447
 - name: github.com/smartystreets/goconvey
   version: 6b3862839847e1e22f71a9e781e08e05cc749a27
 - name: golang.org/x/net
