@@ -4,3 +4,5 @@ import:
 - package: github.com/headzoo/surf
 - package: github.com/smartystreets/goconvey
 - package: github.com/Pallinder/go-randomdata
+- package: github.com/jtolds/gls
+- package: github.com/smartystreets/assertions

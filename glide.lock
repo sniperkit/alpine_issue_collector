@@ -1,24 +1,28 @@
-hash: 4a3a8709e024011b4a78ae2ea9be2b0db9d7fe24c448822bef129edf82011be5
-updated: 2016-06-03T12:04:12.413751728-04:00
+hash: e6eaaf924d107d7ec1bf5bc3287d18519d6160184d67700b7954937e397a19bf
+updated: 2016-06-06T10:24:34.055509581-04:00
 imports:
 - name: github.com/andybalholm/cascadia
-  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
 - name: github.com/headzoo/surf
-  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
   subpackages:
   - browser
   - agent
   - jar
   - errors
   - util
+- name: github.com/jtolds/gls
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
 - name: github.com/Pallinder/go-randomdata
-  version: 104cc800bd6434e70cb0c3ad08c4541f4f2eb48b
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
 - name: github.com/PuerkitoBio/goquery
-  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
+- name: github.com/smartystreets/assertions
+  version: 40711f7748186bbf9c99977cd89f21ce1a229447
 - name: github.com/smartystreets/goconvey
-  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
 - name: golang.org/x/net
-  version: 48dd368ab7e3f385d06cfff422e3997d191065ec
+  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
   subpackages:
   - html
   - html/atom
