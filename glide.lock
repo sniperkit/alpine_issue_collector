@@ -3,6 +3,8 @@ updated: 2016-06-06T10:24:34.055509581-04:00
 imports:
 - name: github.com/andybalholm/cascadia
   version: 6b3862839847e1e22f71a9e781e08e05cc749a27
+- name: github.com/aws/aws-sdk-go
+  version: 1608a1f6ffe7f327007d2aca50ebf1d26c285ef2
 - name: github.com/headzoo/surf
   version: 6b3862839847e1e22f71a9e781e08e05cc749a27
   subpackages:

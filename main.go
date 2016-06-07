@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/eedevops/alpine_issue_collector/collectors"
-	"github.com/eedevops/alpine_issue_collector/utils"
 	"github.com/eedevops/alpine_issue_collector/model"
+	"github.com/eedevops/alpine_issue_collector/utils"
 )
 
 func main() {
