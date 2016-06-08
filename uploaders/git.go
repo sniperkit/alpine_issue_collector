@@ -4,15 +4,15 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"net"
 	"os"
 	"os/exec"
-	"strings"
 	"regexp"
-	"net"
+	"strings"
 )
 
 const (
-	CONFIG_FILE_HEADER = "Added by ILM Git uploader"
+	CONFIG_FILE_HEADER      = "Added by ILM Git uploader"
 	DEFAULT_GIT_REMOTE_HOST = "github.com"
 )
 
@@ -22,7 +22,7 @@ type GitServerUploader struct {
 var (
 	ErrSshDeployKeyNotPassed = errors.New("SSH Deploy Key not passed as parameter")
 	ErrHomeEnvVarNotSet      = errors.New("$HOME env var not set, this is needed for deploying key.")
-	ErrSshKeyScan      = errors.New("Could not scan or retrieve ssh key")
+	ErrSshKeyScan            = errors.New("Could not scan or retrieve ssh key")
 )
 
 // TODO: make paths configurable with some default values
@@ -38,12 +38,12 @@ func ConfigureSshEnv(deployKey string) error {
 		return ErrHomeEnvVarNotSet
 	}
 
-	sshDir := fmt.Sprintf("%s/.ssh",homePath)
+	sshDir := fmt.Sprintf("%s/.ssh", homePath)
 	if err := mkdir(sshDir); err != nil {
 		return err
 	}
 
-	defaultDeployKeyFile := fmt.Sprintf("%s/auto-generated-ilm-deploy-key",sshDir)
+	defaultDeployKeyFile := fmt.Sprintf("%s/auto-generated-ilm-deploy-key", sshDir)
 
 	if err := ioutil.WriteFile(defaultDeployKeyFile, []byte(deployKey), 0600); err != nil {
 		return err
@@ -81,7 +81,7 @@ func ConfigureSshEnv(deployKey string) error {
 	}
 
 	// Add host's ssh key into trusted known hosts file
-	knownHosts := fmt.Sprintf("%s/known_hosts",sshDir)
+	knownHosts := fmt.Sprintf("%s/known_hosts", sshDir)
 
 	dataString = ""
 	if _, err := os.Stat(knownHosts); os.IsNotExist(err) {
@@ -236,7 +236,7 @@ func Upload(filePath string, repoConfig GitRepoConfig) error {
 }
 
 func sshKeyScan(host string) (string, string, error) {
-	result, err := exec.Command("ssh-keyscan", "-t", "ssh-rsa",host).Output()
+	result, err := exec.Command("ssh-keyscan", "-t", "ssh-rsa", host).Output()
 	sshKeyValue := ""
 	sshScanResult := ""
 	if err != nil {
@@ -246,7 +246,7 @@ func sshKeyScan(host string) (string, string, error) {
 	}
 
 	sshKeyName := "sshKey"
-	regExpString := fmt.Sprintf("%s\\sssh-rsa\\s(?P<%s>[[:graph:]]+==)", host,sshKeyName )
+	regExpString := fmt.Sprintf("%s\\sssh-rsa\\s(?P<%s>[[:graph:]]+==)", host, sshKeyName)
 
 	re := regexp.MustCompile(regExpString)
 	resultString := string(result)
@@ -259,8 +259,7 @@ func sshKeyScan(host string) (string, string, error) {
 	sshKeyValue = myMap[sshKeyName]
 	sshScanResult = re.FindString(resultString)
 
-
-	if   sshScanResult== "" || sshKeyValue == ""{
+	if sshScanResult == "" || sshKeyValue == "" {
 		return sshScanResult, sshKeyValue, ErrSshKeyScan
 	}
 
@@ -276,7 +275,7 @@ func sshKeyScan(host string) (string, string, error) {
 		return sshScanResult, sshKeyValue, err
 	}
 
-	sshScanResult = fmt.Sprintf("%s,%s %s %s\n",parts[0],ipAddress,parts[1],parts[2])
+	sshScanResult = fmt.Sprintf("%s,%s %s %s\n", parts[0], ipAddress, parts[1], parts[2])
 
 	return sshScanResult, sshKeyValue, nil
 }

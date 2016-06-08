@@ -4,34 +4,22 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/eedevops/alpine_issue_collector/collectors"
-	"github.com/eedevops/alpine_issue_collector/model"
 	"github.com/eedevops/alpine_issue_collector/utils"
 )
 
 func main() {
 
 	// Step 1: Get data from government CVE database
-
-	path, err := utils.DownloadAndExtractFile(utils.ARCHIVEFILE, utils.EXTRACTEDFILE, utils.GOVCVEURL)
-	if err != nil {
-		fmt.Printf(err.Error())
-	}
-	fmt.Printf("Got path: %s\n", path)
-
-	govtNVDentries, err := utils.ReadEntries(utils.EXTRACTEDFILE)
+	govtNVDentries, err := utils.Collect()
 	if err != nil {
 		fmt.Printf("error when getting cve entries: %s\n", err.Error())
 	}
-	/*for i := 0; i< len(govtNVDentries); i ++{
-		fmt.Printf("%s\n", govtNVDentries[i].Name)
-		for _, product := range govtNVDentries[i].Packages {
-		fmt.Printf("%s version %s\n", product.Name, product.Version)
-		}
-	}*/
 
 	// Step 2: Read all packages from Alpine Package Database
 
 	c1 := collectors.NewDefaultAlpinePackageCollector()
+
+	c1.SetMaxNumberPages(0)
 
 	packages, err := c1.Collect()
 
@@ -40,38 +28,34 @@ func main() {
 		return
 	}
 
-	data, err := json.MarshalIndent(packages, "", "  ")
+	// Step 3. Filter out items in NVD dataset that don't match Alpine packages / version / architecture
 
-	if err != nil {
-		fmt.Println("Error marshalling")
-		return
-	}
-
-	// Pretty print the packages
-	//fmt.Println(string(data))
-	packagesVersionsMap := map[string][]model.AlpinePackageVersionDetails{}
-	err = json.Unmarshal(data, &packagesVersionsMap)
-	if err != nil {
-		fmt.Println("error:", err)
-	}
-	// TODO: Step 3. Filter out items in NVD dataset that don't match Alpine packages / version / architecture
-	fmt.Printf("\n### ALPINE PACKAGES 		###		%d	\n", len(packagesVersionsMap))
-	fmt.Printf("### GOVERNMENT NVDS 		###		%d	\n", len(govtNVDentries))
-
-	filteredNVDs := utils.ExtractMatchingAlpinePackagesAndGOVData(packagesVersionsMap, govtNVDentries)
-	fmt.Printf("### MATCHED PACKAGES STEP 3 	###		%d	\n", len(filteredNVDs))
+	filteredNVDs := utils.ExtractMatchingAlpinePackagesAndGOVData(packages, govtNVDentries)
 
 	// TODO: Step 4. Grab issues from Alpine issues page, cross reference CVE information, inject metadata
 	//issues :=utils.GetUniqueCVEListFromAlpineURL()
 	//finalNVDs := utils.ExtractMatchingAlpineIssueCVESandGovData(issues, filteredNVDs)
-	//fmt.Printf("### MATCHED PACKAGES STEP 4 	###		%d	\n", len(finalNVDs))
-	// TODO: Step 5. Upload file to github.com or S3 file server
-	// Temporarily write the final results to a local file
-	finalData, err := json.MarshalIndent(filteredNVDs, "", "  ")
+
+	fmt.Printf("### MATCHED PACKAGES STEP 4 	###		%d	\n", len(filteredNVDs))
+
+	// Step 5: Convert to Clair-consumable format
+	// FIXME: a lot of values are being hardcoded, should extract from alpine packages or from other sources.
+	almostFinalData := utils.ConvertNVDToClair(packages, filteredNVDs)
+	fmt.Printf("### CLAIR READY PACKAGE LIST STEP 5 	###		%d	\n", len(almostFinalData))
+
+	// Step 6: Write Clair-consumable json to file before uploading.
+	finalData, err := json.MarshalIndent(almostFinalData, "", "  ")
 
 	if err != nil {
 		fmt.Println("Error marshalling")
 		return
 	}
-	utils.WriteDataToFinalOutputJSONFile(finalData)
+
+	if jsonFileName, err := utils.WriteDataToFinalOutputJSONFile("/tmp", finalData); err != nil {
+		fmt.Println(jsonFileName)
+		// TODO: Step 7. Upload file to github.com or S3 file server
+
+		// TODO: Step 8. Remove file
+		// os.RemoveAll(jsonFileName)
+	}
 }

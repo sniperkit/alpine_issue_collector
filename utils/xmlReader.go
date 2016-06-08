@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"compress/gzip"
+	//"compress/gzip"
 	"encoding/xml"
 	"fmt"
 	"github.com/eedevops/alpine_issue_collector/model"
@@ -9,16 +9,17 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"path/filepath"
+	//"path/filepath"
+	"compress/gzip"
 	"strconv"
 	"strings"
 	"time"
 )
 
 const (
-	ARCHIVEFILE   = "data/cve.xml.gz"
-	EXTRACTEDFILE = "data/cve.xml"
-	GOVCVEURL     = "http://static.nvd.nist.gov/feeds/xml/cve/nvdcve-2.0-%s.xml.gz"
+	EXTRACTEDFILE       = "data/cve.xml"
+	GOVCVEURL           = "http://static.nvd.nist.gov/feeds/xml/cve/nvdcve-2.0-%s.xml.gz"
+	DEFAULT_FILE_STRING = "cve.xml"
 )
 
 func GetDataFeedNames() []string {
@@ -42,71 +43,161 @@ func ReadEntries(filePath string) ([]model.NVDEntry, error) {
 	}
 	//process the packages for each entry and get the package name and version.
 	for i, entry := range nvd.Entries {
+		nvd.Entries[i].Packages = make(map[string]model.SoftwarePackage)
 		for _, product := range entry.Products.ProductStrings {
+			var version string
 			words := strings.Split(product, ":")
-			afflicted_software := model.SoftwarePackage{}
-			afflicted_software.Name = words[3]
-			if len(words) > 4 {
-				afflicted_software.Version = words[4]
-			} else {
-				afflicted_software.Version = "unknown"
+			//			afflicted_software := model.SoftwarePackage{}
+
+			productLen := len(words)
+			name := ""
+			if productLen > 3 {
+				name = words[3]
 			}
 
-			nvd.Entries[i].Packages = append(nvd.Entries[i].Packages, afflicted_software)
+			if name == "" {
+				fmt.Errorf("Length of product %s is %d... skipping", product, productLen)
+				continue
+			}
+			if productLen > 4 {
+				version = words[4]
+			} else {
+				version = "unknown"
+			}
+			_, exists := nvd.Entries[i].Packages[name]
+			if !exists {
+				nvd.Entries[i].Packages[name] = model.SoftwarePackage{Name: name}
+			}
+			tmp_package := nvd.Entries[i].Packages[name]
+			tmp_package.Versions = append(tmp_package.Versions, version)
+			nvd.Entries[i].Packages[name] = tmp_package
+
+			//			nvd.Entries[i].Packages = append(nvd.Entries[i].Packages, afflicted_software)
 		}
 	}
+	/*fmt.Printf("first cve = %s\n", nvd.Entries[5].Name)
+	for _, pack := range nvd.Entries[5].Packages {
+		fmt.Printf("package name =  %s\nversions:\n", pack.Name)
+		for _, version := range pack.Versions {
+			fmt.Printf("%s\n", version)
+		}
+	}*/
 	return nvd.Entries, nil
 }
-func DownloadAndExtractFile(archiveFile, extractedFile string, url string) (string, error) {
+func DownloadAndExtractFile(downloadDir string, url string) ([]string, error) {
 
-	// Create the file
-	out, err := os.Create(archiveFile)
-	if err != nil {
-		return "", err
-	}
-	defer out.Close()
-
+	downloadDir = strings.TrimRight(downloadDir, "/")
 	// Get the data
 	df := GetDataFeedNames()
-	for _, de := range df {
-		resp, err := http.Get(fmt.Sprintf(GOVCVEURL, de))
+	localCompressedFileNames := []string{}
+	for i, de := range df {
+		// Create the file
+		compressedFileName := fmt.Sprintf("%s/%s-%d.gz", downloadDir, DEFAULT_FILE_STRING, i)
+		out, err := os.Create(compressedFileName)
 		if err != nil {
-			return "", err
+			fmt.Errorf("Could not create compressed file %s", compressedFileName)
+			continue
 		}
-		defer resp.Body.Close()
+
+		endpoint := fmt.Sprintf(GOVCVEURL, de)
+		resp, err := http.Get(endpoint)
+		if err != nil {
+			fmt.Errorf("Could not download (get) file %s", endpoint)
+			continue
+		}
 
 		// Writer the body to file
-		fmt.Printf("Processing GOV page %s\n", fmt.Sprintf(GOVCVEURL, de))
+		fmt.Printf("Processing GOV page %s\n", endpoint)
+
 		_, err = io.Copy(out, resp.Body)
 		if err != nil {
-			return "", err
+			fmt.Errorf("Could not write download of file %s into %s", compressedFileName, endpoint)
+			continue
 		}
-	}
-	// open archive file
-	reader, err := os.Open(archiveFile)
-	if err != nil {
-		return "", err
-	}
-	defer reader.Close()
 
-	archive, err := gzip.NewReader(reader)
-	if err != nil {
-		return "", err
+		localCompressedFileNames = append(localCompressedFileNames, compressedFileName)
+		out.Close()
+		resp.Body.Close()
 	}
-	defer archive.Close()
-	//extract archive
-	extractedFile = filepath.Join(extractedFile, archive.Name)
-	writer, err := os.Create(extractedFile)
-	if err != nil {
-		return "", err
-	}
-	defer writer.Close()
 
-	_, err = io.Copy(writer, archive)
-	if err != nil {
-		return "", err
+	extractedFileNames := []string{}
+	for i, compressedFileName := range localCompressedFileNames {
+		// open archive file
+		reader, err := os.Open(compressedFileName)
+		if err != nil {
+			fmt.Errorf("Could not open compressed file %s", compressedFileName)
+			continue
+		}
+
+		archive, err := gzip.NewReader(reader)
+		if err != nil {
+			fmt.Errorf("Could not read compressed file %s", compressedFileName)
+			continue
+		}
+
+		//extract archive
+
+		parts := strings.Split(compressedFileName, "-")
+		extractedFileName := ""
+		if len(parts) == 2 {
+			otherParts := strings.Split(parts[0], ".")
+
+			if len(otherParts) == 2 {
+				extractedFileName = fmt.Sprintf("%s-%d.%s", otherParts[0], i, otherParts[1])
+			}
+
+		}
+
+		if extractedFileName == "" {
+			fmt.Errorf("Could not generate local extracted file name for %s", compressedFileName)
+			continue
+		}
+
+		writer, err := os.Create(extractedFileName)
+		if err != nil {
+			fmt.Errorf("Could not create extracted file %s", extractedFileName)
+			continue
+		}
+
+		_, err = io.Copy(writer, archive)
+		if err != nil {
+			fmt.Errorf("Could not copy file %s to %s, error = %s", compressedFileName, extractedFileName, err.Error())
+			continue
+		}
+		// remove tha archive file and return the extracted file
+		os.Remove(compressedFileName)
+		extractedFileNames = append(extractedFileNames, extractedFileName)
+		reader.Close()
+		archive.Close()
+		writer.Close()
 	}
-	// remove tha archive file and return the extracted file
-	os.Remove(archiveFile)
-	return extractedFile, nil
+
+	return extractedFileNames, nil
+}
+
+func Collect() ([]model.NVDEntry, error) {
+	allEntries := []model.NVDEntry{}
+
+	paths, err := DownloadAndExtractFile("/tmp", GOVCVEURL)
+	if err != nil {
+		fmt.Printf(err.Error())
+		return allEntries, err
+	}
+
+	for _, xmlFile := range paths {
+		fmt.Printf("Reading entries from file %s\n", xmlFile)
+		entries, err := ReadEntries(xmlFile)
+
+		if err != nil {
+			fmt.Errorf("Could not read NVD entries from file %s\n", xmlFile)
+			continue
+		}
+
+		fmt.Printf("Found %d entries from file %s\n", len(entries), xmlFile)
+		allEntries = append(allEntries, entries...)
+		fmt.Printf("Length of all entries = %d\n", len(allEntries))
+		os.RemoveAll(xmlFile)
+	}
+
+	return allEntries, nil
 }

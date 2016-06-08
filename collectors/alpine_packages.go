@@ -20,17 +20,24 @@ const (
 type AlpinePackageCollector struct {
 	bow                *browser.Browser
 	maximumConcurrency int
+	maxNumberPages     int
 }
 
-func NewAlpinePackageCollector(browser *browser.Browser, maximumConcurrency int) *AlpinePackageCollector {
+func NewAlpinePackageCollector(browser *browser.Browser, maximumConcurrency int, maxNumberPages int) *AlpinePackageCollector {
 	return &AlpinePackageCollector{
 		bow:                browser,
 		maximumConcurrency: maximumConcurrency,
+		maxNumberPages:     maxNumberPages,
 	}
 }
+
 func NewDefaultAlpinePackageCollector() *AlpinePackageCollector {
-	c := NewAlpinePackageCollector(surf.NewBrowser(), DEFAULT_MAX_CONCURRENCY)
+	c := NewAlpinePackageCollector(surf.NewBrowser(), DEFAULT_MAX_CONCURRENCY, 0)
 	return c
+}
+
+func (c *AlpinePackageCollector) SetMaxNumberPages(maxNumberPages int) {
+	c.maxNumberPages = maxNumberPages
 }
 
 type AlpinePackage map[string]string
@@ -67,7 +74,7 @@ func (c *AlpinePackageCollector) Collect() (AlpinePackageDictionary, error) {
 		totalNumberPages, err = strconv.Atoi(myMap[totalPagesKey])
 
 		if err != nil {
-			fmt.Printf("Error parsing the total number of pages %s", myMap[totalPagesKey])
+			fmt.Printf("Error parsing the total number of pages %s\n", myMap[totalPagesKey])
 			return
 		}
 	})
@@ -75,6 +82,10 @@ func (c *AlpinePackageCollector) Collect() (AlpinePackageDictionary, error) {
 	startTime := time.Now()
 
 	pagesUrl := []string{}
+
+	if c.maxNumberPages > 0 {
+		totalNumberPages = c.maxNumberPages
+	}
 
 	pageChannels := make(chan AlpinePackageDictionary, totalNumberPages)
 
@@ -107,7 +118,7 @@ func (c *AlpinePackageCollector) Collect() (AlpinePackageDictionary, error) {
 	// 3.6 minutes
 	timeElapsed := endTime.Sub(startTime)
 
-	fmt.Printf("Time elapsed %d", timeElapsed.Seconds())
+	fmt.Printf("Time elapsed %f seconds.\n", timeElapsed.Seconds())
 
 	close(pageChannels)
 
@@ -118,7 +129,7 @@ func (c *AlpinePackageCollector) Collect() (AlpinePackageDictionary, error) {
 		}
 	}
 
-	fmt.Printf("Received %d packages", len(allPackages))
+	fmt.Printf("Received %d packages\n", len(allPackages))
 
 	return allPackages, nil
 }
@@ -144,10 +155,13 @@ func (c *AlpinePackageCollector) getPagePackages(pageUrl string) AlpinePackageDi
 
 			value := strings.Replace(strings.Replace(t.Text(), " ", "", -1), "\n", "", -1)
 			// If we find a version, split it since alpine uses a composite version + release label
-			if attr != "version" {
+			if attr == "version" {
 				parts := strings.Split(value, "-")
 				if len(parts) == 2 {
 					alpinePackage["version_release"] = parts[1]
+					value = parts[0]
+				} else {
+					alpinePackage["version_release"] = ""
 				}
 			}
 			alpinePackage[attr] = value
