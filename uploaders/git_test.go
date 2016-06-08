@@ -38,7 +38,7 @@ func TestGitUpload(t *testing.T) {
 					commitMsg,
 					remoteRepoUri,
 					origin,
-					"",
+					"testing.json",
 				)
 
 				err := uploaders.Upload(tempFilepath, *config)
