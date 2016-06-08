@@ -12,8 +12,9 @@ import (
 )
 
 const (
-	CONFIG_FILE_HEADER      = "Added by ILM Git uploader"
-	DEFAULT_GIT_REMOTE_HOST = "github.com"
+	CONFIG_FILE_HEADER          = "Added by ILM Git uploader"
+	DEFAULT_GIT_REMOTE_HOST     = "github.com"
+	STANDARDIZED_JSON_FILE_NAME = "alpine-linux-package-cve-db.json"
 )
 
 type GitServerUploader struct {
@@ -169,20 +170,22 @@ func CleanupLocalRepo(repoPath string) error {
 }
 
 type GitRepoConfig struct {
-	RepoPath       string
-	BranchName     string
-	CommitMsg      string
-	RepoRemoteUri  string
-	RepoOriginName string
+	RepoPath            string
+	BranchName          string
+	CommitMsg           string
+	RepoRemoteUri       string
+	RepoOriginName      string
+	RepoFileDestination string
 }
 
-func NewGitRepoConfig(repoPath, branchName, commitMsg, repoRemoteUri, RepoOriginName string) *GitRepoConfig {
+func NewGitRepoConfig(repoPath, branchName, commitMsg, repoRemoteUri, repoOriginName, repoFileDestination string) *GitRepoConfig {
 	return &GitRepoConfig{
-		RepoPath:       repoPath,
-		BranchName:     branchName,
-		CommitMsg:      commitMsg,
-		RepoRemoteUri:  repoRemoteUri,
-		RepoOriginName: RepoOriginName,
+		RepoPath:            repoPath,
+		BranchName:          branchName,
+		CommitMsg:           commitMsg,
+		RepoRemoteUri:       repoRemoteUri,
+		RepoOriginName:      repoOriginName,
+		RepoFileDestination: repoFileDestination,
 	}
 }
 
@@ -195,6 +198,10 @@ func Upload(filePath string, repoConfig GitRepoConfig) error {
 	sourceFile := filePath
 	commitMsg := repoConfig.CommitMsg
 	origin := repoConfig.RepoOriginName
+	if repoConfig.RepoFileDestination == "" {
+		repoConfig.RepoFileDestination = STANDARDIZED_JSON_FILE_NAME
+	}
+	repoFilePath := fmt.Sprintf("%s/%s", repoConfig.RepoPath, repoConfig.RepoFileDestination)
 
 	if err := mkdir(repoPath); err != nil {
 		return err
@@ -216,7 +223,7 @@ func Upload(filePath string, repoConfig GitRepoConfig) error {
 		return err
 	}
 
-	if err := copyFile(sourceFile, repoPath); err != nil {
+	if err := copyFile(sourceFile, repoFilePath); err != nil {
 		return err
 	}
 
@@ -331,9 +338,9 @@ func gitCheckout(repoPath string, branchName string) error {
 	return nil
 }
 
-func copyFile(sourceFile string, destinationDir string) error {
-	copyCmd := exec.Command("cp", "-f", sourceFile, ".")
-	copyCmd.Dir = destinationDir
+func copyFile(sourceFile string, destinationFile string) error {
+	copyCmd := exec.Command("cp", "-f", sourceFile, destinationFile)
+	//copyCmd.Dir = destinationFile
 	if err := copyCmd.Run(); err != nil {
 		fmt.Println("Error copying file.")
 		fmt.Printf("%s", err.Error())
