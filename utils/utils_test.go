@@ -34,15 +34,16 @@ func TestCollector(t *testing.T) {
 	return
 }
 
-/*
 func TestNVDCollection(t *testing.T) {
-	govtNVDentries, err := Collect()
+	govtNVDentries, err := Collect(false)
 	//make sure NVD data is collected
 	assert.Nil(t, err)
+	assert.NotEmpty(t, govtNVDentries)
 	global_issues = govtNVDentries
 	return
 }
 
+/*
 func TestFilter(t *testing.T) {
 	assert.NotEmpty(t, global_issues)
 	assert.NotEmpty(t, global_packages)

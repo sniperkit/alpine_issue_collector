@@ -84,7 +84,7 @@ func ReadEntries(filePath string) ([]model.NVDEntry, error) {
 	}*/
 	return nvd.Entries, nil
 }
-func DownloadAndExtractFile(downloadDir string, url string) ([]string, error) {
+func DownloadAndExtractFile(downloadDir string, url string, verbose bool) ([]string, error) {
 
 	downloadDir = strings.TrimRight(downloadDir, "/")
 	// Get the data
@@ -107,7 +107,9 @@ func DownloadAndExtractFile(downloadDir string, url string) ([]string, error) {
 		}
 
 		// Writer the body to file
-		fmt.Printf("Processing GOV page %s\n", endpoint)
+		if verbose {
+			fmt.Printf("Processing GOV page %s\n", endpoint)
+		}
 
 		_, err = io.Copy(out, resp.Body)
 		if err != nil {
@@ -175,27 +177,32 @@ func DownloadAndExtractFile(downloadDir string, url string) ([]string, error) {
 	return extractedFileNames, nil
 }
 
-func Collect() ([]model.NVDEntry, error) {
+func Collect(verbose bool) ([]model.NVDEntry, error) {
 	allEntries := []model.NVDEntry{}
 
-	paths, err := DownloadAndExtractFile("/tmp", GOVCVEURL)
+	paths, err := DownloadAndExtractFile("/tmp", GOVCVEURL, verbose)
 	if err != nil {
 		fmt.Printf(err.Error())
 		return allEntries, err
 	}
 
 	for _, xmlFile := range paths {
-		fmt.Printf("Reading entries from file %s\n", xmlFile)
+		if verbose {
+			fmt.Printf("Reading entries from file %s\n", xmlFile)
+		}
 		entries, err := ReadEntries(xmlFile)
 
 		if err != nil {
 			fmt.Errorf("Could not read NVD entries from file %s\n", xmlFile)
 			continue
 		}
-
-		fmt.Printf("Found %d entries from file %s\n", len(entries), xmlFile)
+		if verbose {
+			fmt.Printf("Found %d entries from file %s\n", len(entries), xmlFile)
+		}
 		allEntries = append(allEntries, entries...)
-		fmt.Printf("Length of all entries = %d\n", len(allEntries))
+		if verbose {
+			fmt.Printf("Length of all entries = %d\n", len(allEntries))
+		}
 		os.RemoveAll(xmlFile)
 	}
 

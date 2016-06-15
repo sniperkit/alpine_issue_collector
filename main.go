@@ -21,7 +21,7 @@ const (
 func main() {
 
 	// Step 1: Get data from government CVE database
-	govtNVDentries, err := utils.Collect()
+	govtNVDentries, err := utils.Collect(VERBOSE)
 	if err != nil {
 		fmt.Printf("error when getting cve entries: %s\n", err.Error())
 	}
