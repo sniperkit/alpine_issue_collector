@@ -43,7 +43,7 @@ func (c *AlpinePackageCollector) SetMaxNumberPages(maxNumberPages int) {
 type AlpinePackage map[string]string
 type AlpinePackageDictionary map[string][]AlpinePackage
 
-func (c *AlpinePackageCollector) Collect() (AlpinePackageDictionary, error) {
+func (c *AlpinePackageCollector) Collect(verbose bool) (AlpinePackageDictionary, error) {
 	c.bow = surf.NewBrowser()
 	err := c.bow.Open("https://pkgs.alpinelinux.org/packages")
 	if err != nil {
@@ -93,7 +93,9 @@ func (c *AlpinePackageCollector) Collect() (AlpinePackageDictionary, error) {
 
 		pageNumber := i + 1
 		pageUrl := fmt.Sprintf("%s%d", DEFAULT_PAGE_URL, pageNumber)
-		fmt.Printf("Getting page %s\n", pageUrl)
+		if verbose {
+			fmt.Printf("Getting page %s\n", pageUrl)
+		}
 		pagesUrl = append(pagesUrl, pageUrl)
 	}
 
@@ -103,7 +105,9 @@ func (c *AlpinePackageCollector) Collect() (AlpinePackageDictionary, error) {
 	for i, pageUrl := range pagesUrl {
 		wg.Add(1)
 		throttleChannel <- true
-		fmt.Printf("Executing page %d %s\n", i, pageUrl)
+		if verbose {
+			fmt.Printf("Executing page %d %s\n", i, pageUrl)
+		}
 		go func() {
 			defer wg.Done()
 			pageChannels <- c.getPagePackages(pageUrl)
