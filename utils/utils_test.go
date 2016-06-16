@@ -2,6 +2,7 @@ package utils
 
 import (
 	//"fmt"
+	log "github.com/Sirupsen/logrus"
 	"github.com/eedevops/alpine_issue_collector/collectors"
 	"github.com/eedevops/alpine_issue_collector/model"
 	"github.com/stretchr/testify/assert"
@@ -23,6 +24,9 @@ var (
 //verify each step with predefined data, so that we get predictable results
 
 //get packages
+func init() {
+	log.SetLevel(log.WarnLevel)
+}
 func TestCollector(t *testing.T) {
 	c1 := collectors.NewDefaultAlpinePackageCollector()
 	c1.SetMaxNumberPages(2) //get just 2 pages instead of all

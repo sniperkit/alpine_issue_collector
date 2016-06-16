@@ -4,11 +4,13 @@ import (
 	//"compress/gzip"
 	"encoding/xml"
 	"fmt"
+	log "github.com/Sirupsen/logrus"
 	"github.com/eedevops/alpine_issue_collector/model"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
+
 	//"path/filepath"
 	"compress/gzip"
 	"strconv"
@@ -22,6 +24,9 @@ const (
 	DEFAULT_FILE_STRING = "cve.xml"
 )
 
+func init() {
+	log.SetLevel(log.WarnLevel)
+}
 func GetDataFeedNames() []string {
 	var dataFeedNames []string
 	for y := 2002; y <= time.Now().Year(); y++ {
@@ -107,10 +112,8 @@ func DownloadAndExtractFile(downloadDir string, url string, verbose bool) ([]str
 		}
 
 		// Writer the body to file
-		if verbose {
-			fmt.Printf("Processing GOV page %s\n", endpoint)
-		}
-
+		log.SetLevel(log.WarnLevel)
+		log.Debug(fmt.Printf("Processing GOV page %s\n", endpoint))
 		_, err = io.Copy(out, resp.Body)
 		if err != nil {
 			fmt.Errorf("Could not write download of file %s into %s", compressedFileName, endpoint)
