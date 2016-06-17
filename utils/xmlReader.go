@@ -112,8 +112,9 @@ func DownloadAndExtractFile(downloadDir string, url string, verbose bool) ([]str
 		}
 
 		// Writer the body to file
-		log.SetLevel(log.WarnLevel)
-		log.Debug(fmt.Printf("Processing GOV page %s\n", endpoint))
+		if verbose {
+			log.Debug(fmt.Printf("Processing GOV page %s\n", endpoint))
+		}
 		_, err = io.Copy(out, resp.Body)
 		if err != nil {
 			fmt.Errorf("Could not write download of file %s into %s", compressedFileName, endpoint)
@@ -209,5 +210,26 @@ func Collect(verbose bool) ([]model.NVDEntry, error) {
 		os.RemoveAll(xmlFile)
 	}
 
+	return allEntries, nil
+}
+
+func CollectFromSingleFile(verbose bool, xmlFile string) ([]model.NVDEntry, error) {
+	allEntries := []model.NVDEntry{}
+	if verbose {
+		fmt.Printf("Reading entries from file %s\n", xmlFile)
+	}
+	entries, err := ReadEntries(xmlFile)
+
+	if err != nil {
+		fmt.Errorf("Could not read NVD entries from file %s\n", xmlFile)
+		return entries, err
+	}
+	if verbose {
+		fmt.Printf("Found %d entries from file %s\n", len(entries), xmlFile)
+	}
+	allEntries = append(allEntries, entries...)
+	if verbose {
+		fmt.Printf("Length of all entries = %d\n", len(allEntries))
+	}
 	return allEntries, nil
 }

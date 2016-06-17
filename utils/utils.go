@@ -195,7 +195,6 @@ func ExtractMatchingAlpinePackagesAndGOVData(alpinePackageDict collectors.Alpine
 				nvd.Packages[govPackageIndex] = pkg
 
 			}
-
 			includeNVD = includeNVD || softwarePackageMatched
 
 			// If we found that this NVD package matches a package in alpine,
