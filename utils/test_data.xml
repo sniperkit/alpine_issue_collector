@@ -1,0 +1,338 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<nvd xmlns:scap-core="http://scap.nist.gov/schema/scap-core/0.1" xmlns:cvss="http://scap.nist.gov/schema/cvss-v2/0.2" xmlns:vuln="http://scap.nist.gov/schema/vulnerability/0.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:patch="http://scap.nist.gov/schema/patch/0.1" xmlns="http://scap.nist.gov/schema/feed/vulnerability/2.0" xmlns:cpe-lang="http://cpe.mitre.org/language/2.0" pub_date="2016-06-16T05:06:11" nvd_xml_version="2.0" xsi:schemaLocation="http://scap.nist.gov/schema/patch/0.1 http://nvd.nist.gov/schema/patch_0.1.xsd http://scap.nist.gov/schema/feed/vulnerability/2.0 http://nvd.nist.gov/schema/nvd-cve-feed_2.0.xsd http://scap.nist.gov/schema/scap-core/0.1 http://nvd.nist.gov/schema/scap-core_0.1.xsd">
+<entry id="CVE-2007-2448">
+    <vuln:vulnerable-configuration id="http://nvd.nist.gov/">
+      <cpe-lang:logical-test operator="OR" negate="false">
+        <cpe-lang:fact-ref name="cpe:/a:subversion:subversion:1.4.3"/>
+      </cpe-lang:logical-test>
+    </vuln:vulnerable-configuration>
+    <vuln:vulnerable-software-list>
+      <vuln:product>cpe:/a:subversion:subversion:1.9.4</vuln:product>
+    </vuln:vulnerable-software-list>
+    <vuln:cve-id>CVE-2007-2448</vuln:cve-id>
+    <vuln:published-datetime>2007-06-14T19:30:00.000-04:00</vuln:published-datetime>
+    <vuln:last-modified-datetime>2012-11-05T22:38:17.403-05:00</vuln:last-modified-datetime>
+    <vuln:cvss>
+      <cvss:base_metrics>
+        <cvss:score>2.1</cvss:score>
+        <cvss:access-vector>NETWORK</cvss:access-vector>
+        <cvss:access-complexity>HIGH</cvss:access-complexity>
+        <cvss:authentication>SINGLE_INSTANCE</cvss:authentication>
+        <cvss:confidentiality-impact>PARTIAL</cvss:confidentiality-impact>
+        <cvss:integrity-impact>NONE</cvss:integrity-impact>
+        <cvss:availability-impact>NONE</cvss:availability-impact>
+        <cvss:source>http://nvd.nist.gov</cvss:source>
+        <cvss:generated-on-datetime>2007-06-15T16:04:00.000-04:00</cvss:generated-on-datetime>
+      </cvss:base_metrics>
+    </vuln:cvss>
+    <vuln:references xml:lang="en" reference_type="PATCH">
+      <vuln:source>BID</vuln:source>
+      <vuln:reference href="http://www.securityfocus.com/bid/24463" xml:lang="en">24463</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="PATCH">
+      <vuln:source>SECTRACK</vuln:source>
+      <vuln:reference href="http://securitytracker.com/id?1018237" xml:lang="en">1018237</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>VUPEN</vuln:source>
+      <vuln:reference href="http://www.vupen.com/english/advisories/2011/0264" xml:lang="en">ADV-2011-0264</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>VUPEN</vuln:source>
+      <vuln:reference href="http://www.vupen.com/english/advisories/2007/2230" xml:lang="en">ADV-2007-2230</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>UBUNTU</vuln:source>
+      <vuln:reference href="http://www.ubuntu.com/usn/USN-1053-1" xml:lang="en">USN-1053-1</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>CONFIRM</vuln:source>
+      <vuln:reference href="http://subversion.tigris.org/security/CVE-2007-2448-advisory.txt" xml:lang="en">http://subversion.tigris.org/security/CVE-2007-2448-advisory.txt</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>CONFIRM</vuln:source>
+      <vuln:reference href="https://issues.rpath.com/browse/RPL-1896" xml:lang="en">https://issues.rpath.com/browse/RPL-1896</vuln:reference>
+    </vuln:references>
+    <vuln:summary>Subversion 1.4.3 and earlier does not properly implement the "partial access" privilege for users who have access to changed paths but not copied paths, which allows remote authenticated users to obtain sensitive information (revision properties) via svn (1) propget, (2) proplist, or (3) propedit.</vuln:summary>
+  </entry>
+
+      <entry id="CVE-2007-2449">
+    <vuln:vulnerable-configuration id="http://nvd.nist.gov/">
+      <cpe-lang:logical-test operator="OR" negate="false">
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:4.0.0"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:4.0.1"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:4.0.2"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:4.0.3"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:4.0.4"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:4.0.5"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.0"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.1"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.10"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.11"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.12"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.13"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.14"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.15"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.16"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.17"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.18"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.19"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.2"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.21"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.22"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.23"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.24"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.25"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.26"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.27"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.28"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.29"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.3"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.30"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.4"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.5"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.6"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.7"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.8"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.0.9"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.0"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.1"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.10"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.11"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.12"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.13"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.14"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.15"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.16"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.17"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.18"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.19"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.2"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.20"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.21"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.22"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.3"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.4"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.5"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.6"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.7"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.8"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:5.5.9"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.0"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.1"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.10"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.11"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.12"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.13"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.2"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.3"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.4"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.5"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.6"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.7"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:6.0.8"/>
+        <cpe-lang:fact-ref name="cpe:/a:apache:tomcat:4.1.36"/>
+      </cpe-lang:logical-test>
+    </vuln:vulnerable-configuration>
+    <vuln:vulnerable-software-list>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.11</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.10</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:4.0.3</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:4.0.2</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:4.0.1</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:4.0.0</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.9</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:4.0.5</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.8</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:4.0.4</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.1</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.2</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.15</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.0</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.14</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.1</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.13</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.5</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.12</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.6</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.19</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.4</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.0</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.18</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.5</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.17</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.2</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.16</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.3</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.3</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.4</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.22</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.21</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.22</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.6</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.7</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.7</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.20</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.8</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.21</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.26</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.25</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.24</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.23</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.29</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.28</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.27</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.19</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.0.30</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.17</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.18</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.11</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.4</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.12</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.5</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.15</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.16</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.10</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.13</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.14</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.0</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.1</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:4.1.36</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.10</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.12</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.11</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.8</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.9</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.2</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.3</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.6</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:5.5.7</vuln:product>
+      <vuln:product>cpe:/a:apache:tomcat:6.0.13</vuln:product>
+    </vuln:vulnerable-software-list>
+    <vuln:cve-id>CVE-2007-2449</vuln:cve-id>
+    <vuln:published-datetime>2007-06-14T19:30:00.000-04:00</vuln:published-datetime>
+    <vuln:last-modified-datetime>2012-10-30T22:34:36.310-04:00</vuln:last-modified-datetime>
+    <vuln:cvss>
+      <cvss:base_metrics>
+        <cvss:score>4.3</cvss:score>
+        <cvss:access-vector>NETWORK</cvss:access-vector>
+        <cvss:access-complexity>MEDIUM</cvss:access-complexity>
+        <cvss:authentication>NONE</cvss:authentication>
+        <cvss:confidentiality-impact>NONE</cvss:confidentiality-impact>
+        <cvss:integrity-impact>PARTIAL</cvss:integrity-impact>
+        <cvss:availability-impact>NONE</cvss:availability-impact>
+        <cvss:source>http://nvd.nist.gov</cvss:source>
+        <cvss:generated-on-datetime>2007-06-15T16:20:00.000-04:00</cvss:generated-on-datetime>
+      </cvss:base_metrics>
+    </vuln:cvss>
+    <vuln:assessment_check system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="http://oval.mitre.org/repository/data/getDef?id=oval:org.mitre.oval:def:10578" name="oval:org.mitre.oval:def:10578"/>
+    <vuln:references xml:lang="en" reference_type="PATCH">
+      <vuln:source>CONFIRM</vuln:source>
+      <vuln:reference href="http://tomcat.apache.org/security-6.html" xml:lang="en">http://tomcat.apache.org/security-6.html</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>VUPEN</vuln:source>
+      <vuln:reference href="http://www.vupen.com/english/advisories/2009/0233" xml:lang="en">ADV-2009-0233</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>VUPEN</vuln:source>
+      <vuln:reference href="http://www.vupen.com/english/advisories/2008/1981/references" xml:lang="en">ADV-2008-1981</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>VUPEN</vuln:source>
+      <vuln:reference href="http://www.vupen.com/english/advisories/2007/3386" xml:lang="en">ADV-2007-3386</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>VUPEN</vuln:source>
+      <vuln:reference href="http://www.vupen.com/english/advisories/2007/2213" xml:lang="en">ADV-2007-2213</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>BUGTRAQ</vuln:source>
+      <vuln:reference href="http://www.securityfocus.com/archive/1/archive/1/500412/100/0/threaded" xml:lang="en">20090127 CA20090123-01: Cohesion Tomcat Multiple Vulnerabilities (Updated - v1.1)</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>BUGTRAQ</vuln:source>
+      <vuln:reference href="http://www.securityfocus.com/archive/1/archive/1/500396/100/0/threaded" xml:lang="en">20090124 CA20090123-01: Cohesion Tomcat Multiple Vulnerabilities</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>BUGTRAQ</vuln:source>
+      <vuln:reference href="http://www.securityfocus.com/archive/1/archive/1/471351/100/0/threaded" xml:lang="en">20070614 [CVE-2007-2449] Apache Tomcat XSS vulnerabilities in the JSP examples</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>CONFIRM</vuln:source>
+      <vuln:reference href="http://support.ca.com/irj/portal/anonymous/phpsupcontent?contentID=197540" xml:lang="en">http://support.ca.com/irj/portal/anonymous/phpsupcontent?contentID=197540</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>REDHAT</vuln:source>
+      <vuln:reference href="http://rhn.redhat.com/errata/RHSA-2008-0630.html" xml:lang="en">RHSA-2008:0630</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>SUSE</vuln:source>
+      <vuln:reference href="http://lists.opensuse.org/opensuse-security-announce/2009-02/msg00002.html" xml:lang="en">SUSE-SR:2009:004</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>HP</vuln:source>
+      <vuln:reference href="http://h20000.www2.hp.com/bizsupport/TechSupport/Document.jsp?objectID=c01178795" xml:lang="en">HPSBUX02262</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>CONFIRM</vuln:source>
+      <vuln:reference href="http://community.ca.com/blogs/casecurityresponseblog/archive/2009/01/23.aspx" xml:lang="en">http://community.ca.com/blogs/casecurityresponseblog/archive/2009/01/23.aspx</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>FEDORA</vuln:source>
+      <vuln:reference href="https://www.redhat.com/archives/fedora-package-announce/2007-November/msg00525.html" xml:lang="en">FEDORA-2007-3456</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>XF</vuln:source>
+      <vuln:reference href="http://xforce.iss.net/xforce/xfdb/34869" xml:lang="en">tomcat-example-xss(34869)</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>SECTRACK</vuln:source>
+      <vuln:reference href="http://www.securitytracker.com/id?1018245" xml:lang="en">1018245</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>BID</vuln:source>
+      <vuln:reference href="http://www.securityfocus.com/bid/24476" xml:lang="en">24476</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>REDHAT</vuln:source>
+      <vuln:reference href="http://www.redhat.com/support/errata/RHSA-2008-0261.html" xml:lang="en">RHSA-2008:0261</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>REDHAT</vuln:source>
+      <vuln:reference href="http://www.redhat.com/support/errata/RHSA-2007-0569.html" xml:lang="en">RHSA-2007:0569</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>MANDRIVA</vuln:source>
+      <vuln:reference href="http://www.mandriva.com/security/advisories?name=MDKSA-2007:241" xml:lang="en">MDKSA-2007:241</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>CONFIRM</vuln:source>
+      <vuln:reference href="http://tomcat.apache.org/security-5.html" xml:lang="en">http://tomcat.apache.org/security-5.html</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>CONFIRM</vuln:source>
+      <vuln:reference href="http://tomcat.apache.org/security-4.html" xml:lang="en">http://tomcat.apache.org/security-4.html</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>CONFIRM</vuln:source>
+      <vuln:reference href="http://support.apple.com/kb/HT2163" xml:lang="en">http://support.apple.com/kb/HT2163</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>SREASON</vuln:source>
+      <vuln:reference href="http://securityreason.com/securityalert/2804" xml:lang="en">2804</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>SUSE</vuln:source>
+      <vuln:reference href="http://lists.opensuse.org/opensuse-security-announce/2008-03/msg00008.html" xml:lang="en">SUSE-SR:2008:007</vuln:reference>
+    </vuln:references>
+    <vuln:references xml:lang="en" reference_type="UNKNOWN">
+      <vuln:source>APPLE</vuln:source>
+      <vuln:reference href="http://lists.apple.com/archives/security-announce/2008//Jun/msg00002.html" xml:lang="en">APPLE-SA-2008-06-30</vuln:reference>
+    </vuln:references>
+    <vuln:scanner>
+      <vuln:definition system="http://oval.mitre.org/XMLSchema/oval-definitions-5" href="http://oval.mitre.org/repository/data/DownloadDefinition?id=oval:org.mitre.oval:def:10578" name="oval:org.mitre.oval:def:10578"/>
+    </vuln:scanner>
+    <vuln:summary>Multiple cross-site scripting (XSS) vulnerabilities in certain JSP files in the examples web application in Apache Tomcat 4.0.0 through 4.0.6, 4.1.0 through 4.1.36, 5.0.0 through 5.0.30, 5.5.0 through 5.5.24, and 6.0.0 through 6.0.13 allow remote attackers to inject arbitrary web script or HTML via the portion of the URI after the ';' character, as demonstrated by a URI containing a "snp/snoop.jsp;" sequence.</vuln:summary>
+  </entry>
+  </nvd>
