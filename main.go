@@ -15,12 +15,13 @@ const (
 	NVD_COUNT_THRESHOLD              = 77000
 	ALPINE_PACKAGE_COUNT_THRESHOLD   = 9487
 	FILTERED_NVD_CVE_COUNT_THRESHOLD = 148
+	VERBOSE                          = true
 )
 
 func main() {
 
 	// Step 1: Get data from government CVE database
-	govtNVDentries, err := utils.Collect()
+	govtNVDentries, err := utils.Collect(VERBOSE)
 	if err != nil {
 		fmt.Printf("error when getting cve entries: %s\n", err.Error())
 	}
@@ -38,7 +39,7 @@ func main() {
 
 	c1.SetMaxNumberPages(0)
 
-	packages, err := c1.Collect()
+	packages, err := c1.Collect(VERBOSE)
 
 	if err != nil {
 		log.Fatalf("Error collecting alpine packages, error = %s", err.Error())

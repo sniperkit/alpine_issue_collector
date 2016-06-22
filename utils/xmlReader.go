@@ -4,11 +4,13 @@ import (
 	//"compress/gzip"
 	"encoding/xml"
 	"fmt"
+	log "github.com/Sirupsen/logrus"
 	"github.com/eedevops/alpine_issue_collector/model"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
+
 	//"path/filepath"
 	"compress/gzip"
 	"strconv"
@@ -22,6 +24,9 @@ const (
 	DEFAULT_FILE_STRING = "cve.xml"
 )
 
+func init() {
+	log.SetLevel(log.WarnLevel)
+}
 func GetDataFeedNames() []string {
 	var dataFeedNames []string
 	for y := 2002; y <= time.Now().Year(); y++ {
@@ -84,7 +89,7 @@ func ReadEntries(filePath string) ([]model.NVDEntry, error) {
 	}*/
 	return nvd.Entries, nil
 }
-func DownloadAndExtractFile(downloadDir string, url string) ([]string, error) {
+func DownloadAndExtractFile(downloadDir string, url string, verbose bool) ([]string, error) {
 
 	downloadDir = strings.TrimRight(downloadDir, "/")
 	// Get the data
@@ -107,8 +112,9 @@ func DownloadAndExtractFile(downloadDir string, url string) ([]string, error) {
 		}
 
 		// Writer the body to file
-		fmt.Printf("Processing GOV page %s\n", endpoint)
-
+		if verbose {
+			log.Debug(fmt.Printf("Processing GOV page %s\n", endpoint))
+		}
 		_, err = io.Copy(out, resp.Body)
 		if err != nil {
 			fmt.Errorf("Could not write download of file %s into %s", compressedFileName, endpoint)
@@ -175,29 +181,63 @@ func DownloadAndExtractFile(downloadDir string, url string) ([]string, error) {
 	return extractedFileNames, nil
 }
 
-func Collect() ([]model.NVDEntry, error) {
+func Collect(verbose bool) ([]model.NVDEntry, error) {
 	allEntries := []model.NVDEntry{}
 
-	paths, err := DownloadAndExtractFile("/tmp", GOVCVEURL)
+	paths, err := DownloadAndExtractFile("/tmp", GOVCVEURL, verbose)
 	if err != nil {
 		fmt.Printf(err.Error())
 		return allEntries, err
 	}
 
 	for _, xmlFile := range paths {
-		fmt.Printf("Reading entries from file %s\n", xmlFile)
-		entries, err := ReadEntries(xmlFile)
-
-		if err != nil {
-			fmt.Errorf("Could not read NVD entries from file %s\n", xmlFile)
-			continue
+		entries, err := CollectFromSingleFile(verbose, xmlFile)
+		if nil == err {
+			allEntries = append(allEntries, entries...)
 		}
+		/*
+			if verbose {
+				fmt.Printf("Reading entries from file %s\n", xmlFile)
+			}
+			entries, err := ReadEntries(xmlFile)
 
-		fmt.Printf("Found %d entries from file %s\n", len(entries), xmlFile)
-		allEntries = append(allEntries, entries...)
-		fmt.Printf("Length of all entries = %d\n", len(allEntries))
+			if err != nil {
+				fmt.Errorf("Could not read NVD entries from file %s\n", xmlFile)
+				continue
+			}
+			if verbose {
+				fmt.Printf("Found %d entries from file %s\n", len(entries), xmlFile)
+			}
+			allEntries = append(allEntries, entries...)
+			if verbose {
+				fmt.Printf("Length of all entries = %d\n", len(allEntries))
+			}
+			os.RemoveAll(xmlFile)
+		*/
 		os.RemoveAll(xmlFile)
+
 	}
 
+	return allEntries, nil
+}
+
+func CollectFromSingleFile(verbose bool, xmlFile string) ([]model.NVDEntry, error) {
+	allEntries := []model.NVDEntry{}
+	if verbose {
+		fmt.Printf("Reading entries from file %s\n", xmlFile)
+	}
+	entries, err := ReadEntries(xmlFile)
+
+	if err != nil {
+		fmt.Errorf("Could not read NVD entries from file %s\n", xmlFile)
+		return entries, err
+	}
+	if verbose {
+		fmt.Printf("Found %d entries from file %s\n", len(entries), xmlFile)
+	}
+	allEntries = append(allEntries, entries...)
+	if verbose {
+		fmt.Printf("Length of all entries = %d\n", len(allEntries))
+	}
 	return allEntries, nil
 }
