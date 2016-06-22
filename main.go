@@ -12,10 +12,7 @@ import (
 )
 
 const (
-	NVD_COUNT_THRESHOLD              = 77000
-	ALPINE_PACKAGE_COUNT_THRESHOLD   = 9487
-	FILTERED_NVD_CVE_COUNT_THRESHOLD = 148
-	VERBOSE                          = true
+	VERBOSE = true
 )
 
 func main() {
@@ -27,10 +24,6 @@ func main() {
 	}
 
 	nvdTotal := len(govtNVDentries)
-
-	if nvdTotal < NVD_COUNT_THRESHOLD {
-		log.Fatalf("Retrieved less than %d nvd entries (only %d)\n", NVD_COUNT_THRESHOLD, nvdTotal)
-	}
 
 	log.Printf("### CVEs from NVD db = %d", nvdTotal)
 
@@ -47,20 +40,12 @@ func main() {
 
 	alpinePackageTotal := len(packages)
 
-	if alpinePackageTotal < ALPINE_PACKAGE_COUNT_THRESHOLD {
-		log.Fatalf("Retrieved less than %d alpine packages (only %d)\n", ALPINE_PACKAGE_COUNT_THRESHOLD, alpinePackageTotal)
-	}
-
 	log.Printf("### ALPINE PACKAGES = %d", alpinePackageTotal)
 
 	// Step 3. Filter out items in NVD dataset that don't match Alpine packages / version / architecture
 	filteredNVDs := utils.ExtractMatchingAlpinePackagesAndGOVData(packages, govtNVDentries)
 
 	filteredTotal := len(filteredNVDs)
-
-	if filteredTotal < FILTERED_NVD_CVE_COUNT_THRESHOLD {
-		log.Fatalf("After matching / filtering, we have %d, but expected more than %d", filteredTotal, FILTERED_NVD_CVE_COUNT_THRESHOLD)
-	}
 
 	// TODO: Step 4. Grab issues from Alpine issues page, cross reference CVE information, inject metadata
 	//issues :=utils.GetUniqueCVEListFromAlpineURL()
