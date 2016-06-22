@@ -8,10 +8,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"os/exec"
 	"regexp"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -27,7 +25,6 @@ const (
 	ALPINEPACKAGEURL       = "http://pkgs.alpinelinux.org/packages"
 	PACKAGEVERSIONFILEPATH = "../data/packages_versions.json"
 	FINALJSONFILE_PREFIX   = "resultNVD-final"
-	ALPINERELEASE          = "alpine:3.3.3"
 )
 
 func GetDataFromAlpineIssuesUrl(url string) ([]string, error) {
@@ -62,27 +59,6 @@ func GetDataFromAlpinePackageUrl(url string) ([]string, error) {
 	}
 
 	return nil, nil
-}
-
-func GetDataFromAlpinePackages() {
-
-	var wg sync.WaitGroup
-	wg.Add(1)
-	defer wg.Done()
-	ticker := time.NewTicker(time.Second * 1)
-	go func() {
-		exec.Command("python", "-c", "parser.py")
-		go func() {
-			for t := range ticker.C {
-				fmt.Printf("Processing data from alpine package URL at time: %s \n", t.String())
-
-			}
-		}()
-
-	}()
-
-	ticker.Stop()
-	fmt.Println("Task completed")
 }
 
 func DetectNumberOfCves(list []string) []string {
