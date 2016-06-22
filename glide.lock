@@ -1,31 +1,66 @@
-hash: e6eaaf924d107d7ec1bf5bc3287d18519d6160184d67700b7954937e397a19bf
-updated: 2016-06-06T10:24:34.055509581-04:00
+hash: 3a516d949fe9407e615c9c048a63640c26d797ddcf55af5e626d6680b139fc98
+updated: 2016-06-22T16:50:42.716691572-04:00
 imports:
 - name: github.com/andybalholm/cascadia
-  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
+  version: b2d359ef90b18a4bc049cd47798e8d7661fbe367
 - name: github.com/aws/aws-sdk-go
-  version: 1608a1f6ffe7f327007d2aca50ebf1d26c285ef2
+  version: b2d359ef90b18a4bc049cd47798e8d7661fbe367
+  subpackages:
+  - aws
+  - aws/session
+  - service/s3
+  - service/s3/s3manager
+  - aws/awserr
+  - aws/credentials
+  - aws/client
+  - aws/corehandlers
+  - aws/defaults
+  - aws/request
+  - private/endpoints
+  - aws/awsutil
+  - aws/client/metadata
+  - private/protocol
+  - private/protocol/restxml
+  - private/signer/v4
+  - private/waiter
+  - service/s3/s3iface
+  - aws/credentials/ec2rolecreds
+  - aws/ec2metadata
+  - private/protocol/query
+  - private/protocol/rest
+  - private/protocol/xml/xmlutil
+  - private/protocol/query/queryutil
+- name: github.com/go-ini/ini
+  version: 72ba3e6b9e6b87e0c74c9a7a4dc86e8dd8ba4355
 - name: github.com/headzoo/surf
-  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
+  version: b2d359ef90b18a4bc049cd47798e8d7661fbe367
   subpackages:
   - browser
   - agent
   - jar
   - errors
   - util
+- name: github.com/jmespath/go-jmespath
+  version: 0b12d6b521d83fc7f755e7cfc1b1fbdd35a01a74
 - name: github.com/jtolds/gls
-  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
+  version: b2d359ef90b18a4bc049cd47798e8d7661fbe367
 - name: github.com/Pallinder/go-randomdata
-  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
+  version: b2d359ef90b18a4bc049cd47798e8d7661fbe367
 - name: github.com/PuerkitoBio/goquery
-  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
+  version: b2d359ef90b18a4bc049cd47798e8d7661fbe367
+- name: github.com/Sirupsen/logrus
+  version: f3cfb454f4c209e6668c95216c4744b8fddb2356
 - name: github.com/smartystreets/assertions
-  version: 40711f7748186bbf9c99977cd89f21ce1a229447
+  version: b2d359ef90b18a4bc049cd47798e8d7661fbe367
 - name: github.com/smartystreets/goconvey
-  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
+  version: b2d359ef90b18a4bc049cd47798e8d7661fbe367
 - name: golang.org/x/net
-  version: 6b3862839847e1e22f71a9e781e08e05cc749a27
+  version: b2d359ef90b18a4bc049cd47798e8d7661fbe367
   subpackages:
   - html
   - html/atom
+- name: golang.org/x/sys
+  version: 62bee037599929a6e9146f29d10dd5208c43507d
+  subpackages:
+  - unix
 devImports: []
