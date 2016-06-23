@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/headzoo/surf"
-	"github.com/headzoo/surf/browser"
 	"regexp"
 	"strconv"
 	"strings"
@@ -18,21 +17,19 @@ const (
 )
 
 type AlpinePackageCollector struct {
-	bow                *browser.Browser
 	maximumConcurrency int
 	maxNumberPages     int
 }
 
-func NewAlpinePackageCollector(browser *browser.Browser, maximumConcurrency int, maxNumberPages int) *AlpinePackageCollector {
+func NewAlpinePackageCollector(maximumConcurrency int, maxNumberPages int) *AlpinePackageCollector {
 	return &AlpinePackageCollector{
-		bow:                browser,
 		maximumConcurrency: maximumConcurrency,
 		maxNumberPages:     maxNumberPages,
 	}
 }
 
 func NewDefaultAlpinePackageCollector() *AlpinePackageCollector {
-	c := NewAlpinePackageCollector(surf.NewBrowser(), DEFAULT_MAX_CONCURRENCY, 0)
+	c := NewAlpinePackageCollector(DEFAULT_MAX_CONCURRENCY, 0)
 	return c
 }
 
@@ -44,17 +41,17 @@ type AlpinePackage map[string]string
 type AlpinePackageDictionary map[string][]AlpinePackage
 
 func (c *AlpinePackageCollector) Collect(verbose bool) (AlpinePackageDictionary, error) {
-	c.bow = surf.NewBrowser()
-	err := c.bow.Open("https://pkgs.alpinelinux.org/packages")
+	bow := surf.NewBrowser()
+	err := bow.Open("https://pkgs.alpinelinux.org/packages")
 	if err != nil {
 		panic(err)
 	}
 
 	// Outputs: "The Go Programming Language"
-	fmt.Println(c.bow.Title())
+	fmt.Println(bow.Title())
 
 	totalNumberPages := 0
-	c.bow.Find("a:contains('»')").Each(func(_ int, s *goquery.Selection) {
+	bow.Find("a:contains('»')").Each(func(_ int, s *goquery.Selection) {
 		fmt.Println(s.Text())
 		attr, exists := s.Attr("href")
 		if !exists {
@@ -140,14 +137,15 @@ func (c *AlpinePackageCollector) Collect(verbose bool) (AlpinePackageDictionary,
 
 func (c *AlpinePackageCollector) getPagePackages(pageUrl string) AlpinePackageDictionary {
 
-	err := c.bow.Open(pageUrl)
+	bow := surf.NewBrowser()
+	err := bow.Open(pageUrl)
 
 	if err != nil {
 		fmt.Printf("Error collecting page %s", pageUrl)
 	}
 
 	allPackageIndex := AlpinePackageDictionary{}
-	c.bow.Find("tr").Each(func(_ int, s *goquery.Selection) {
+	bow.Find("tr").Each(func(_ int, s *goquery.Selection) {
 		alpinePackage := AlpinePackage{}
 		s.Find("td").Each(func(_ int, t *goquery.Selection) {
 			attr, found := t.Attr("class")
