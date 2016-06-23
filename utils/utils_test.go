@@ -8,7 +8,6 @@ import (
 	"github.com/eedevops/alpine_issue_collector/model"
 	"github.com/eedevops/alpine_issue_collector/uploaders"
 	. "github.com/smartystreets/goconvey/convey"
-	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -226,14 +225,17 @@ func TestUploadFile(t *testing.T) {
 
 //this is the cleanup function, it should always run last
 func TestCleanup(t *testing.T) {
-	err := os.RemoveAll(global_json_filename)
-	assert.Nil(t, err)
-	regex := regexp.MustCompile(`^/tmp/resultNVD-final-(\d+)\.json$`)
-	matches := regex.FindStringSubmatch(global_json_filename)
-	if len(matches) > 1 {
-		dirname := "/tmp/alpine-git-test-repo-" + matches[1]
-		os.RemoveAll(dirname)
-	} else {
-		fmt.Printf("no matches\n")
-	}
+	Convey("We make sure that we can cleanup after all tests.", t, func() {
+		err := os.RemoveAll(global_json_filename)
+		So(err, ShouldBeNil)
+		regex := regexp.MustCompile(`^/tmp/resultNVD-final-(\d+)\.json$`)
+		matches := regex.FindStringSubmatch(global_json_filename)
+		if len(matches) > 1 {
+			dirname := "/tmp/alpine-git-test-repo-" + matches[1]
+			os.RemoveAll(dirname)
+		} else {
+			fmt.Printf("no matches\n")
+		}
+
+	})
 }
