@@ -16,6 +16,10 @@ import (
 	"time"
 )
 
+const (
+	URGENCY = "low"
+)
+
 var (
 	global_packages        collectors.AlpinePackageDictionary
 	global_issues          []model.NVDEntry
@@ -39,7 +43,7 @@ func TestCollector(t *testing.T) {
 }
 
 //get the government issues list
-
+/*
 func TestNVDCollection(t *testing.T) {
 	Convey("Pull issues from CVE repository, this will take a while...\n", t, func() {
 		govtNVDentries, err := Collect(false)
@@ -48,6 +52,7 @@ func TestNVDCollection(t *testing.T) {
 		global_issues = govtNVDentries
 	})
 }
+*/
 
 //get test cve issues
 func TestLoadTestData(t *testing.T) {
@@ -123,7 +128,7 @@ func TestConvertNVDToClair(t *testing.T) {
 		So(release.AffectedVersions, ShouldNotBeEmpty)
 		So(release.AffectedVersions[0], ShouldEqual, "1.9.4-r1")
 		So(release.Status, ShouldEqual, "open")
-		So(release.Urgency, ShouldEqual, "high**")
+		So(release.Urgency, ShouldEqual, URGENCY)
 		global_json_data = jsonData
 	})
 }
@@ -153,7 +158,7 @@ func TestWriteToFile(t *testing.T) {
 		So(release.AffectedVersions, ShouldNotBeEmpty)
 		So(release.AffectedVersions[0], ShouldEqual, "1.9.4-r1")
 		So(release.Status, ShouldEqual, "open")
-		So(release.Urgency, ShouldEqual, "high**")
+		So(release.Urgency, ShouldEqual, URGENCY)
 		global_json_filename = jsonFileName
 	})
 }
@@ -200,7 +205,8 @@ func TestUploadFile(t *testing.T) {
 
 		err = uploaders.Upload(global_json_filename, *gitConfig)
 		So(err, ShouldBeNil)
-
+		//wait 10 seconds so github has a chance to update the file
+		time.Sleep(10 * time.Second)
 		//then download the file and verify that it contains what it should contain
 		resp, err := http.Get(fileUrl)
 		So(err, ShouldBeNil)
@@ -219,7 +225,7 @@ func TestUploadFile(t *testing.T) {
 		So(release.AffectedVersions, ShouldNotBeEmpty)
 		So(release.AffectedVersions[0], ShouldEqual, "1.9.4-r1")
 		So(release.Status, ShouldEqual, "open")
-		So(release.Urgency, ShouldEqual, "high**")
+		So(release.Urgency, ShouldEqual, URGENCY)
 	})
 }
 
