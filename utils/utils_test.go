@@ -43,7 +43,6 @@ func TestCollector(t *testing.T) {
 }
 
 //get the government issues list
-/*
 func TestNVDCollection(t *testing.T) {
 	Convey("Pull issues from CVE repository, this will take a while...\n", t, func() {
 		govtNVDentries, err := Collect(false)
@@ -52,7 +51,6 @@ func TestNVDCollection(t *testing.T) {
 		global_issues = govtNVDentries
 	})
 }
-*/
 
 //get test cve issues
 func TestLoadTestData(t *testing.T) {
