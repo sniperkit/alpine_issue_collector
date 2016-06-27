@@ -218,9 +218,18 @@ func ConvertNVDToClair(alpinePackageDict collectors.AlpinePackageDictionary, ent
 	for _, entry := range entries {
 		//loop through packages in current entry
 		for _, pack := range entry.Packages {
-
+			urgency := "not yet assigned"
+			if entry.CVSS.BaseMetrics.Score < 4.0 {
+				urgency = "low"
+			}
+			if entry.CVSS.BaseMetrics.Score >= 4.0 && entry.CVSS.BaseMetrics.Score < 7.0 {
+				urgency = "medium"
+			}
+			if entry.CVSS.BaseMetrics.Score >= 7.0 {
+				urgency = "high"
+			}
 			//create a new flat structure based on the current entry
-			flat := model.CVEFlatStructure{CVE: entry.Name, Desc: entry.Description, Pack: pack}
+			flat := model.CVEFlatStructure{CVE: entry.Name, Desc: entry.Description, Pack: pack, Urgency: urgency}
 			//push the current structure into the array
 			lines = append(lines, flat)
 		}
@@ -237,11 +246,11 @@ func ConvertNVDToClair(alpinePackageDict collectors.AlpinePackageDictionary, ent
 			data[line.Pack.Name] = make(map[string]model.JsonVuln)
 		}
 		//
-		//need to figure out the status and urgency
-		//hardcoding open and high** for now
+		//need to figure out the status
+		//hardcoding open for now
 		// added all versions
 		for idx, _ := range alpinePackageDict[line.Pack.Name] {
-			release := model.JsonRel{AffectedVersions: line.Pack.Versions, Status: "open", Urgency: "high**"}
+			release := model.JsonRel{AffectedVersions: line.Pack.Versions, Status: "open", Urgency: line.Urgency}
 			vuln := model.JsonVuln{Description: line.Desc}
 			vuln.Releases = make(map[string]model.JsonRel)
 
