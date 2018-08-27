@@ -1,12 +1,19 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 package uploaders_test
 
 import (
 	"fmt"
-	gen "github.com/Pallinder/go-randomdata"
-	"github.com/eedevops/alpine_issue_collector/uploaders"
-	. "github.com/smartystreets/goconvey/convey"
 	"os"
 	"testing"
+
+	gen "github.com/Pallinder/go-randomdata"
+	. "github.com/smartystreets/goconvey/convey"
+
+	"github.com/sniperkit/snk.fork.eedevops-alpine_issue_collector/uploaders"
 )
 
 func TestGitUpload(t *testing.T) {

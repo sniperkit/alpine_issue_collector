@@ -1,11 +1,17 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 package uploaders_test
 
 import (
 	"encoding/json"
 	"fmt"
-	gen "github.com/Pallinder/go-randomdata"
 	"io/ioutil"
 	"time"
+
+	gen "github.com/Pallinder/go-randomdata"
 )
 
 func writeMockJsonFile() (time.Time, string, error) {

@@ -1,15 +1,22 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 package utils
 
 import (
 	//"compress/gzip"
 	"encoding/xml"
 	"fmt"
-	log "github.com/Sirupsen/logrus"
-	"github.com/eedevops/alpine_issue_collector/model"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
+
+	log "github.com/sirupsen/logrus"
+
+	"github.com/sniperkit/snk.fork.eedevops-alpine_issue_collector/model"
 
 	//"path/filepath"
 	"compress/gzip"

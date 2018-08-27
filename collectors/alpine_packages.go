@@ -1,14 +1,20 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 package collectors
 
 import (
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
-	"github.com/headzoo/surf"
 	"regexp"
 	"strconv"
 	"strings"
 	"sync"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/headzoo/surf"
 )
 
 const (

@@ -1,14 +1,20 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 package main
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/eedevops/alpine_issue_collector/collectors"
-	"github.com/eedevops/alpine_issue_collector/uploaders"
-	"github.com/eedevops/alpine_issue_collector/utils"
 	"log"
 	"os"
 	"time"
+
+	"github.com/sniperkit/snk.fork.eedevops-alpine_issue_collector/collectors"
+	"github.com/sniperkit/snk.fork.eedevops-alpine_issue_collector/uploaders"
+	"github.com/sniperkit/snk.fork.eedevops-alpine_issue_collector/utils"
 )
 
 const (

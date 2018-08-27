@@ -1,11 +1,18 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 package uploaders_test
 
-import "testing"
 import (
 	"fmt"
-	"github.com/eedevops/alpine_issue_collector/uploaders"
-	. "github.com/smartystreets/goconvey/convey"
 	"os"
+	"testing"
+
+	. "github.com/smartystreets/goconvey/convey"
+
+	"github.com/sniperkit/snk.fork.eedevops-alpine_issue_collector/uploaders"
 )
 
 // Note: you need to set AWS_TEST_BUCKET_NAME in your environment.

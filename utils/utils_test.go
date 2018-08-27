@@ -1,19 +1,26 @@
+/*
+Sniperkit-Bot
+- Status: analyzed
+*/
+
 package utils
 
 import (
 	"encoding/json"
 	"fmt"
-	log "github.com/Sirupsen/logrus"
-	"github.com/eedevops/alpine_issue_collector/collectors"
-	"github.com/eedevops/alpine_issue_collector/model"
-	"github.com/eedevops/alpine_issue_collector/uploaders"
-	. "github.com/smartystreets/goconvey/convey"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"regexp"
 	"testing"
 	"time"
+
+	log "github.com/sirupsen/logrus"
+	. "github.com/smartystreets/goconvey/convey"
+
+	"github.com/sniperkit/snk.fork.eedevops-alpine_issue_collector/collectors"
+	"github.com/sniperkit/snk.fork.eedevops-alpine_issue_collector/model"
+	"github.com/sniperkit/snk.fork.eedevops-alpine_issue_collector/uploaders"
 )
 
 const (
